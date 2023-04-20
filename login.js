@@ -1,12 +1,10 @@
 const firebaseConfig = {
-  // Place your Firebase configuration values here
-  const firebaseConfig = {
-    apiKey: "AIzaSyA2FTLG_RgzXUOYz5UZ3CISuiw5bDHRIuw",
-    authDomain: "gas-prices-4ff65.firebaseapp.com",
-    projectId: "gas-prices-4ff65",
-    storageBucket: "gas-prices-4ff65.appspot.com",
-    messagingSenderId: "334309115103",
-    appId: "G-W93C9PP94F"
+  apiKey: "AIzaSyA2FTLG_RgzXUOYz5UZ3CISuiw5bDHRIuw",
+  authDomain: "gas-prices-4ff65.firebaseapp.com",
+  projectId: "gas-prices-4ff65",
+  storageBucket: "gas-prices-4ff65.appspot.com",
+  messagingSenderId: "334309115103",
+  appId: "G-W93C9PP94F"
 };
 
 // Initialize Firebase
