@@ -27,8 +27,6 @@ document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
     premium: premiumPrice,
     diesel: dieselPrice,
   });
-
-  updateTable(regularPrice, midgradePrice, premiumPrice, dieselPrice);
 });
 
 function updateTable(regular, midgrade, premium, diesel) {
@@ -38,18 +36,14 @@ function updateTable(regular, midgrade, premium, diesel) {
   document.getElementById("dieselPrice").textContent = `$ ${diesel}9`;
 }
 
-// Fetch data from Firestore when the page loads and update the respective elements
+// Listen for real-time updates from Firestore
 db.collection("gasPrices")
   .doc("currentPrices")
-  .get()
-  .then((doc) => {
+  .onSnapshot((doc) => {
     if (doc.exists) {
       const data = doc.data();
       updateTable(data.regular, data.midgrade, data.premium, data.diesel);
     } else {
       console.log("No such document!");
     }
-  })
-  .catch((error) => {
-    console.log("Error getting document:", error);
   });
