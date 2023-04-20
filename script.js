@@ -26,11 +26,6 @@ document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
     premium: premiumPrice,
     diesel: dieselPrice,
   });
-
-  document.getElementById("regularPrice").textContent = `$ ${regularPrice}9`;
-  document.getElementById("midgradePrice").textContent = `$ ${midgradePrice}9`;
-  document.getElementById("premiumPrice").textContent = `$ ${premiumPrice}9`;
-  document.getElementById("dieselPrice").textContent = `$ ${dieselPrice}9`;
 });
 
 // Fetch data from Firestore when the page loads and update the respective elements
@@ -40,10 +35,10 @@ db.collection("gasPrices")
   .then((doc) => {
     if (doc.exists) {
       const data = doc.data();
-      document.getElementById("regularPrice").textContent = `$ ${data.regular}9`;
-      document.getElementById("midgradePrice").textContent = `$ ${data.midgrade}9`;
-      document.getElementById("premiumPrice").textContent = `$ ${data.premium}9`;
-      document.getElementById("dieselPrice").textContent = `$ ${data.diesel}9`;
+      document.getElementById("regular").value = data.regular;
+      document.getElementById("midgrade").value = data.midgrade;
+      document.getElementById("premium").value = data.premium;
+      document.getElementById("diesel").value = data.diesel;
     } else {
       console.log("No such document!");
     }
