@@ -1,4 +1,3 @@
-// Replace these with your own configuration values
 const firebaseConfig = {
   apiKey: "AIzaSyA2FTLG_RgzXUOYz5UZ3CISuiw5bDHRIuw",
   authDomain: "gas-prices-4ff65.firebaseapp.com",
@@ -8,7 +7,6 @@ const firebaseConfig = {
   appId: "G-W93C9PP94F",
 };
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
@@ -36,7 +34,6 @@ function updateTable(regular, midgrade, premium, diesel) {
   document.getElementById("dieselPrice").textContent = `$ ${diesel}9`;
 }
 
-// Listen for real-time updates from Firestore
 db.collection("gasPrices")
   .doc("currentPrices")
   .onSnapshot((doc) => {
@@ -46,4 +43,4 @@ db.collection("gasPrices")
     } else {
       console.log("No such document!");
     }
-  });
+ 
