@@ -12,6 +12,8 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 
+// Add Changes Below
+
 document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -20,14 +22,20 @@ document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
   const premiumPrice = document.getElementById("premium").value;
   const dieselPrice = document.getElementById("diesel").value;
 
-  db.collection("gasPrices").doc("currentPrices").set({
-    regular: regularPrice,
-    midgrade: midgradePrice,
-    premium: premiumPrice,
-    diesel: dieselPrice,
-  });
-
-  updateDisplayPrices();
+  db.collection("gasPrices")
+    .doc("currentPrices")
+    .set({
+      regular: regularPrice,
+      midgrade: midgradePrice,
+      premium: premiumPrice,
+      diesel: dieselPrice,
+    })
+    .then(() => {
+      updateDisplayPrices();
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
 });
 
 function updateDisplayPrices() {
