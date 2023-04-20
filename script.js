@@ -52,3 +52,4 @@ db.collection("gasPrices")
   .catch((error) => {
     console.log("Error getting document:", error);
   });
+
