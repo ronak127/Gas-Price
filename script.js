@@ -1,4 +1,3 @@
-// Replace these with your own configuration values
 const firebaseConfig = {
   apiKey: "AIzaSyA2FTLG_RgzXUOYz5UZ3CISuiw5bDHRIuw",
   authDomain: "gas-prices-4ff65.firebaseapp.com",
@@ -12,29 +11,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
-
-// Fetch data from Firestore when the page loads and update the respective elements
-function fetchPrices() {
-  db.collection("gasPrices")
-    .doc("currentPrices")
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        const data = doc.data();
-        document.getElementById("regularPrice").textContent = `$ ${data.regular}9`;
-        document.getElementById("midgradePrice").textContent = `$ ${data.midgrade}9`;
-        document.getElementById("premiumPrice").textContent = `$ ${data.premium}9`;
-        document.getElementById("dieselPrice").textContent = `$ ${data.diesel}9`;
-      } else {
-        console.log("No such document!");
-      }
-    })
-    .catch((error) => {
-      console.log("Error getting document:", error);
-    });
-}
-
-fetchPrices();
 
 document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -51,5 +27,28 @@ document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
     diesel: dieselPrice,
   });
 
-  fetchPrices();
+  updateTable(regularPrice, midgradePrice, premiumPrice, dieselPrice);
 });
+
+function updateTable(regular, midgrade, premium, diesel) {
+  document.getElementById("regularPrice").textContent = `$ ${regular}9`;
+  document.getElementById("midgradePrice").textContent = `$ ${midgrade}9`;
+  document.getElementById("premiumPrice").textContent = `$ ${premium}9`;
+  document.getElementById("dieselPrice").textContent = `$ ${diesel}9`;
+}
+
+// Fetch data from Firestore when the page loads and update the respective elements
+db.collection("gasPrices")
+  .doc("currentPrices")
+  .get()
+  .then((doc) => {
+    if (doc.exists) {
+      const data = doc.data();
+      updateTable(data.regular, data.midgrade, data.premium, data.diesel);
+    } else {
+      console.log("No such document!");
+    }
+  })
+  .catch((error) => {
+    console.log("Error getting document:", error);
+  });
