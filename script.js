@@ -1,4 +1,3 @@
-// Replace these with your own configuration values
 const firebaseConfig = {
   apiKey: "AIzaSyA2FTLG_RgzXUOYz5UZ3CISuiw5bDHRIuw",
   authDomain: "gas-prices-4ff65.firebaseapp.com",
@@ -13,7 +12,7 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 
-document.getElementById("priceForm").addEventListener("submit", (e) => {
+document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
   e.preventDefault();
 
   const regularPrice = document.getElementById("regular").value;
@@ -52,4 +51,3 @@ db.collection("gasPrices")
   .catch((error) => {
     console.log("Error getting document:", error);
   });
-
