@@ -1,3 +1,4 @@
+// Replace these with your own configuration values
 const firebaseConfig = {
   apiKey: "AIzaSyA2FTLG_RgzXUOYz5UZ3CISuiw5bDHRIuw",
   authDomain: "gas-prices-4ff65.firebaseapp.com",
@@ -12,44 +13,14 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 
-// Add Changes Below
-
-document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const regularPrice = document.getElementById("regular").value;
-  const midgradePrice = document.getElementById("midgrade").value;
-  const premiumPrice = document.getElementById("premium").value;
-  const dieselPrice = document.getElementById("diesel").value;
-
-  db.collection("gasPrices")
-    .doc("currentPrices")
-    .set({
-      regular: regularPrice,
-      midgrade: midgradePrice,
-      premium: premiumPrice,
-      diesel: dieselPrice,
-    })
-    .then(() => {
-      updateDisplayPrices();
-    })
-    .catch((error) => {
-      console.error("Error writing document: ", error);
-    });
-});
-
-function updateDisplayPrices() {
+// Fetch data from Firestore when the page loads and update the respective elements
+function fetchPrices() {
   db.collection("gasPrices")
     .doc("currentPrices")
     .get()
     .then((doc) => {
       if (doc.exists) {
         const data = doc.data();
-        document.getElementById("regular").value = data.regular;
-        document.getElementById("midgrade").value = data.midgrade;
-        document.getElementById("premium").value = data.premium;
-        document.getElementById("diesel").value = data.diesel;
-
         document.getElementById("regularPrice").textContent = `$ ${data.regular}9`;
         document.getElementById("midgradePrice").textContent = `$ ${data.midgrade}9`;
         document.getElementById("premiumPrice").textContent = `$ ${data.premium}9`;
@@ -63,4 +34,22 @@ function updateDisplayPrices() {
     });
 }
 
-updateDisplayPrices();
+fetchPrices();
+
+document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const regularPrice = document.getElementById("regular").value;
+  const midgradePrice = document.getElementById("midgrade").value;
+  const premiumPrice = document.getElementById("premium").value;
+  const dieselPrice = document.getElementById("diesel").value;
+
+  db.collection("gasPrices").doc("currentPrices").set({
+    regular: regularPrice,
+    midgrade: midgradePrice,
+    premium: premiumPrice,
+    diesel: dieselPrice,
+  });
+
+  fetchPrices();
+});
