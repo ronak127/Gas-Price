@@ -1,4 +1,4 @@
-// Your web app's Firebase configuration
+// Replace these with your own configuration values
 const firebaseConfig = {
   apiKey: "AIzaSyA2FTLG_RgzXUOYz5UZ3CISuiw5bDHRIuw",
   authDomain: "gas-prices-4ff65.firebaseapp.com",
@@ -11,21 +11,35 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Handle login
-document.getElementById("loginForm").addEventListener("submit", (e) => {
-  e.preventDefault();
+// Check if the user is logged in
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    console.log("User is logged in.");
+    loadPrices();
+  } else {
+    console.log("User is logged out.");
+    window.location.href = "login.html";
+  }
+});
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      window.location.href = "index.html";
+// Load prices from Firestore
+function loadPrices() {
+  firebase.firestore().collection("prices").doc("latest").get()
+    .then((doc) => {
+      if (doc.exists) {
+        const data = doc.data();
+        document.getElementById("regular").value = data.regular;
+        document.getElementById("midgrade").value = data.midgrade;
+        document.getElementById("premium").value = data.premium;
+        document.getElementById("diesel").value = data.diesel;
+      } else {
+        console.log("No prices found.");
+      }
     })
     .catch((error) => {
-      console.error("Error signing in: ", error);
+      console.error("Error loading prices: ", error);
     });
-});
+}
 
 // Handle price input
 document.getElementById("priceForm").addEventListener("submit", (e) => {
@@ -52,19 +66,14 @@ document.getElementById("priceForm").addEventListener("submit", (e) => {
   });
 });
 
-// Load the most recent prices when the page loads
-firebase.firestore().collection("prices").doc("latest").get()
-  .then((doc) => {
-    if (doc.exists) {
-      const data = doc.data();
-      document.getElementById("regular").value = data.regular;
-      document.getElementById("midgrade").value = data.midgrade;
-      document.getElementById("premium").value = data.premium;
-      document.getElementById("diesel").value = data.diesel;
-    } else {
-      console.log("No such document!");
-    }
-  })
-  .catch((error) => {
-    console.log("Error getting document:", error);
-  });
+// Handle logout
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  firebase.auth().signOut()
+    .then(() => {
+      console.log("User signed out.");
+      window.location.href = "login.html";
+    })
+    .catch((error) => {
+      console.error("Error signing out: ", error);
+    });
+});
