@@ -11,69 +11,25 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Check if the user is logged in
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    console.log("User is logged in.");
-    loadPrices();
-  } else {
-    console.log("User is logged out.");
-    window.location.href = "login.html";
-  }
-});
+const db = firebase.firestore();
 
-// Load prices from Firestore
-function loadPrices() {
-  firebase.firestore().collection("prices").doc("latest").get()
-    .then((doc) => {
-      if (doc.exists) {
-        const data = doc.data();
-        document.getElementById("regular").value = data.regular;
-        document.getElementById("midgrade").value = data.midgrade;
-        document.getElementById("premium").value = data.premium;
-        document.getElementById("diesel").value = data.diesel;
-      } else {
-        console.log("No prices found.");
-      }
-    })
-    .catch((error) => {
-      console.error("Error loading prices: ", error);
-    });
-}
-
-// Handle price input
 document.getElementById("priceForm").addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const regular = parseFloat(document.getElementById("regular").value).toFixed(3);
-  const midgrade = parseFloat(document.getElementById("midgrade").value).toFixed(3);
-  const premium = parseFloat(document.getElementById("premium").value).toFixed(3);
-  const diesel = parseFloat(document.getElementById("diesel").value).toFixed(3);
+  const regularPrice = document.getElementById("regular").value;
+  const midgradePrice = document.getElementById("midgrade").value;
+  const premiumPrice = document.getElementById("premium").value;
+  const dieselPrice = document.getElementById("diesel").value;
 
-  // Save prices to Firestore
-  firebase.firestore().collection("prices").doc("latest").set({
-    regular,
-    midgrade,
-    premium,
-    diesel,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-  })
-  .then(() => {
-    console.log("Prices saved successfully.");
-  })
-  .catch((error) => {
-    console.error("Error saving prices: ", error);
+  db.collection("gasPrices").doc("currentPrices").set({
+    regular: regularPrice,
+    midgrade: midgradePrice,
+    premium: premiumPrice,
+    diesel: dieselPrice,
   });
-});
 
-// Handle logout
-document.getElementById("logoutBtn").addEventListener("click", () => {
-  firebase.auth().signOut()
-    .then(() => {
-      console.log("User signed out.");
-      window.location.href = "login.html";
-    })
-    .catch((error) => {
-      console.error("Error signing out: ", error);
-    });
+  document.getElementById("regularPrice").textContent = `$ ${regularPrice}9`;
+  document.getElementById("midgradePrice").textContent = `$ ${midgradePrice}9`;
+  document.getElementById("premiumPrice").textContent = `$ ${premiumPrice}9`;
+  document.getElementById("dieselPrice").textContent = `$ ${dieselPrice}9`;
 });
