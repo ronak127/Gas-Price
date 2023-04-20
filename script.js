@@ -26,23 +26,5 @@ document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
     premium: premiumPrice,
     diesel: dieselPrice,
   });
-});
 
-// Fetch data from Firestore when the page loads and update the respective elements
-db.collection("gasPrices")
-  .doc("currentPrices")
-  .get()
-  .then((doc) => {
-    if (doc.exists) {
-      const data = doc.data();
-      document.getElementById("regular").value = data.regular;
-      document.getElementById("midgrade").value = data.midgrade;
-      document.getElementById("premium").value = data.premium;
-      document.getElementById("diesel").value = data.diesel;
-    } else {
-      console.log("No such document!");
-    }
-  })
-  .catch((error) => {
-    console.log("Error getting document:", error);
-  });
+  updateDisplayPrices();
