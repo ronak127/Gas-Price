@@ -20,11 +20,13 @@ document.getElementById("gasPricesForm").addEventListener("submit", (e) => {
   const dieselPrice = document.getElementById("diesel").value;
 
   db.collection("gasPrices").doc("currentPrices").set({
-    regular: regularPrice,
-    midgrade: midgradePrice,
-    premium: premiumPrice,
-    diesel: dieselPrice,
+    regular: parseFloat(regularPrice),
+    midgrade: parseFloat(midgradePrice),
+    premium: parseFloat(premiumPrice),
+    diesel: parseFloat(dieselPrice),
   });
+
+  updateTable(regularPrice, midgradePrice, premiumPrice, dieselPrice);
 });
 
 function updateTable(regular, midgrade, premium, diesel) {
@@ -36,11 +38,15 @@ function updateTable(regular, midgrade, premium, diesel) {
 
 db.collection("gasPrices")
   .doc("currentPrices")
-  .onSnapshot((doc) => {
+  .get()
+  .then((doc) => {
     if (doc.exists) {
       const data = doc.data();
       updateTable(data.regular, data.midgrade, data.premium, data.diesel);
     } else {
       console.log("No such document!");
     }
- 
+  })
+  .catch((error) => {
+    console.log("Error getting document:", error);
+  });
