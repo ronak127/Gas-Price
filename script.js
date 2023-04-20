@@ -33,3 +33,22 @@ document.getElementById("priceForm").addEventListener("submit", (e) => {
   document.getElementById("premiumPrice").textContent = `$ ${premiumPrice}9`;
   document.getElementById("dieselPrice").textContent = `$ ${dieselPrice}9`;
 });
+
+// Fetch data from Firestore when the page loads and update the respective elements
+db.collection("gasPrices")
+  .doc("currentPrices")
+  .get()
+  .then((doc) => {
+    if (doc.exists) {
+      const data = doc.data();
+      document.getElementById("regularPrice").textContent = `$ ${data.regular}9`;
+      document.getElementById("midgradePrice").textContent = `$ ${data.midgrade}9`;
+      document.getElementById("premiumPrice").textContent = `$ ${data.premium}9`;
+      document.getElementById("dieselPrice").textContent = `$ ${data.diesel}9`;
+    } else {
+      console.log("No such document!");
+    }
+  })
+  .catch((error) => {
+    console.log("Error getting document:", error);
+  });
