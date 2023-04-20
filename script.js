@@ -1,3 +1,4 @@
+// Replace these with your own configuration values
 const firebaseConfig = {
   apiKey: "AIzaSyA2FTLG_RgzXUOYz5UZ3CISuiw5bDHRIuw",
   authDomain: "gas-prices-4ff65.firebaseapp.com",
