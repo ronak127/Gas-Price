@@ -14,18 +14,18 @@
   
   <form id="gasPricesForm">
     <label for="regular">Regular: $</label>
-    <input type="text" id="regular" placeholder="X.XX9" required>
+    <input type="number" id="regular" step="0.001" min="0" placeholder="X.XX9" required>
     <br><br>
     <label for="midgrade">Midgrade: $</label>
-    <input type="text" id="midgrade" placeholder="X.XX9" required>
+    <input type="number" id="midgrade" step="0.001" min="0" placeholder="X.XX9" required>
     <br><br>
     <label for="premium">Premium: $</label>
-    <input type="text" id="premium" placeholder="X.XX9" required>
+    <input type="number" id="premium" step="0.001" min="0" placeholder="X.XX9" required>
     <br><br>
     <label for="diesel">Diesel: $</label>
-    <input type="text" id="diesel" placeholder="X.XX9" required>
+    <input type="number" id="diesel" step="0.001" min="0" placeholder="X.XX9" required>
     <br><br>
-    <button type="submit">Submit</button>
+    <button type="submit">Submit Prices</button>
   </form>
 
   <script src="script.js"></script>
