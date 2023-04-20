@@ -16,7 +16,7 @@ document.getElementById("loginForm").addEventListener("submit", (e) => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  console.log("Trying to log in with email:", email); // Add this line
+  console.log("Trying to log in with email:", email);
 
   firebase
     .auth()
@@ -24,14 +24,23 @@ document.getElementById("loginForm").addEventListener("submit", (e) => {
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      console.log("Logged in successfully with user:", user); // Add this line
+      console.log("Logged in successfully with user:", user);
       window.location.href = "index.html";
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log("Error code:", errorCode); // Add this line
-      console.log("Error message:", errorMessage); // Add this line
+      console.log("Error code:", errorCode);
+      console.log("Error message:", errorMessage);
       alert("Error: " + errorMessage);
     });
+});
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    console.log("User is logged in:", user);
+    window.location.href = "index.html";
+  } else {
+    console.log("User is not logged in");
+  }
 });
